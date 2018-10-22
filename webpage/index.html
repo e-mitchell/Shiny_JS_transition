@@ -1,0 +1,48 @@
+<!-- Load libraries (JQuery and Plotly) -->
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<body>
+
+  <!-- Add title (titlePanel function in R) -->
+  <h2>Mean expenditure per person, MEPS 2006-2016</h2>
+
+  <!-- Dropdown input to select grouping factor -->
+  <form>
+    <label for="group">Group By:</label>
+    <select id="group" class="form-control">
+      <option value="age" selected>Age Group</option>
+      <option value="insurance">Insurance Coverage</option>
+      <option value="race">Race/Ethnicity</option>
+    </select>
+  </form>
+
+  <!-- Plotly output -->
+  <div id="expPlot"></div>
+
+  <!-- Load MEPS data in JSON format -->
+  <script src="MEPS_data.json"></script>
+
+  <!-- JS code to update plot based on dropdown selection -->
+  <!--  like 'server' function in R                       -->
+  <script>
+
+    /* .on("change") signals reactivity */
+    $('#group').on("change", function(){
+      // Get selected group from object with id = 'group'
+      var grp = $('#group').val();
+
+      // Select data
+      var data = MEPS_data[grp];
+
+      // Create plot and display in div with id = 'expPlot'
+      Plotly.newPlot('expPlot', data);
+    });
+
+    // Trigger reactivity on initial page load
+    $('#group').trigger('change');
+  </script>
+
+</body>
